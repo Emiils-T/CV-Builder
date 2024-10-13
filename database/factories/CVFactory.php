@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use function MongoDB\BSON\toJSON;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CV>
