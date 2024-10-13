@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\CV;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CVController extends Controller
