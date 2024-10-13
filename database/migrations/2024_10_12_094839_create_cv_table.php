@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('cv', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('title');
             $table->string('name');
             $table->string('surname');
             $table->string('email');
