@@ -11,6 +11,7 @@ class CVController extends Controller
     {
         $user = Auth::user();
         $cv = CV::where('user_id', $user->id)->get();
+        dd($cv);
         return view('cv.index', compact('cv'));
     }
 }
