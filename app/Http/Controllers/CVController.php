@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CV;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CVController extends Controller
@@ -17,9 +18,9 @@ class CVController extends Controller
     {
         return view('cv.create');
     }
-    public function store()
+    public function store(Request $request)
     {
-        echo 'hello';
+        dd($request->all());
     }
 
 

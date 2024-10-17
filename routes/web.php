@@ -12,6 +12,7 @@ Route::get('/', function () {
 
 Route::get('/home', [CVController::class, 'index'])->name('dashboard');
 Route::get('/cv/create', [CVController::class, 'create'])->name('cv.create');
+Route::post('/cv/store', [CVController::class, 'store'])->name('cv.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
