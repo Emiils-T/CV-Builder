@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('surname');
             $table->string('email');
             $table->string('phone_number');
-            $table->date('date_of_birth')->nullable();
+            $table->date('date_of_birth');
             $table->string('address')->nullable();
             $table->json('experience')->nullable();
             $table->json('education');

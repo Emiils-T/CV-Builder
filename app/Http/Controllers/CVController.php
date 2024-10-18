@@ -20,7 +20,19 @@ class CVController extends Controller
     }
     public function store(Request $request)
     {
-        dd($request->all());
+        /*dd($request->all());*/
+        $validated = $request->validate([
+            'firstName' => 'required|max:255',
+            'surname' => 'required|max:255',
+            'email' =>  'required|max:255',
+            'phoneNumber' =>  'required|max:255',
+            'dateOfBirth' =>  'required|date',
+            'address' =>  'max:255',
+            'experience' =>  'string',
+            'education' =>  'required|string',
+            'languages' => 'required|string',
+            'skills' => 'string',
+        ]);
     }
 
 
