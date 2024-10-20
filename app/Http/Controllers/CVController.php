@@ -49,7 +49,9 @@ class CVController extends Controller
     }
     public function destroy($id)
     {
-
+        $cv = CV::where('id', $id)->first();
+        $cv->delete();
+        //TODO: add validation
     }
 
 
