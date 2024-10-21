@@ -46,9 +46,9 @@ class CVController extends Controller
         return redirect('cv.index',compact('cv'));
     }
 
-    public function edit($id)
+    public function edit(CV $cv)
     {
-        return view('cv.edit');
+        return view('cv.edit', compact('cv'));
     }
 
     public function update(Request $request, $id)
