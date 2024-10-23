@@ -61,7 +61,7 @@
                             <option value="Masters">Masters</option>
                             <option value="Bachelors">Bachelors</option>
                             <option value="High school">High school</option>
-                            <option value="Emelentary">Elementary</option>
+                            <option value="Elementary">Elementary</option>
                         </select>
                     </div>
 
