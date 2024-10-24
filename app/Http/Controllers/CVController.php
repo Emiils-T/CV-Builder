@@ -11,7 +11,11 @@ class CVController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $cv = CV::where('user_id', $user->id)->get();
+        if(!$user == null){
+            $cv = CV::where('user_id', $user->id)->get();
+        }else{
+            $cv=collect();
+        }
         return view('cv.index', compact('cv'));
     }
     //TODO: add cv.show blade view
