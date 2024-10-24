@@ -27,7 +27,9 @@ class CVController extends Controller
 
     public function create()
     {
-        return view('cv.create');
+        $languages = config('languages.list');
+        $languageLevels = config('languages.levels');
+        return view('cv.create',compact('languages','languageLevels'));
     }
 
     public function store(Request $request)
