@@ -26,6 +26,12 @@ class CV extends Model
         'skills'
     ];
 
+    protected $casts = [
+        'experiences' => 'array',
+        'educations' => 'array',
+        'skills' => 'array',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
