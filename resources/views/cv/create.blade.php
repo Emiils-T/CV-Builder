@@ -54,7 +54,7 @@
                         <label for="education" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Education</label>
                         <select id="education" name="education"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option selected="">Select you highest education level</option>
+                            <option value="" disabled selected hidden>Select you highest education level</option>
                             <option value="Professional">Professional</option>
                             <option value="Masters">Masters</option>
                             <option value="Bachelors">Bachelors</option>
@@ -85,7 +85,7 @@
                     <div class="flex gap-4">
                         <button
                             type="button"
-                            id="addSubform"
+                            id="addExperienceSubform"
                             class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -95,8 +95,7 @@
                         </button>
                     </div>
 
-                    <div id="subformsContainer" class="sm:col-span-2">
-
+                    <div id="experienceSubformsContainer" class="sm:col-span-2">
                     </div>
 
                     <div class="sm:col-span-2">
@@ -114,7 +113,7 @@
         </div>
     </section>
 
-    <template id="subformTemplate">
+    <template id="experienceTemplate">
         <div class="subform bg-gray-50 rounded-lg mt-6 p-6 border border-gray-200 shadow-sm">
             <div class="flex justify-between items-center mb-4">
                 <h4 class="text-lg font-medium text-gray-900">Experience #<span class="subform-number"></span></h4>
@@ -132,7 +131,7 @@
                     <label class="block text-sm font-medium text-gray-700">Employer</label>
                     <input
                         type="text"
-                        name="subforms[INDEX][employer]"
+                        name="experience[INDEX][employer]"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                 </div>
@@ -140,7 +139,7 @@
                     <label class="block text-sm font-medium text-gray-700">Job Title</label>
                     <input
                         type="text"
-                        name="subforms[INDEX][job_title]"
+                        name="experience[INDEX][job_title]"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     >
                 </div>
@@ -149,7 +148,7 @@
                         <label class=" w-full block text-sm font-medium text-gray-700">City</label>
                         <input
                             type="text"
-                            name="subforms[INDEX][city]"
+                            name="experience[INDEX][city]"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         >
                     </div>
@@ -158,25 +157,33 @@
                         <label class=" w-full block text-sm font-medium text-gray-700">Country</label>
                         <input
                             type="text"
-                            name="subforms[INDEX][country]"
+                            name="experience[INDEX][country]"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         >
                     </div>
                     <div class="w-full">
                         <label class=" w-full block text-sm font-medium text-gray-700">Start Date</label>
                         <input
-                            type="text"
-                            name="subforms[INDEX][start_date]"
+                            type="date"
+                            name="experience[INDEX][start_date]"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         >
                     </div>
                     <div class="w-full">
                         <label class=" w-full block text-sm font-medium text-gray-700">End Date</label>
                         <input
-                            type="text"
-                            name="subforms[INDEX][end_date]"
+                            type="date"
+                            name="experience[INDEX][end_date]"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                         >
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea
+                            name="experience[INDEX][description]"
+                            rows="4"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        ></textarea>
                     </div>
                 </div>
 
@@ -187,9 +194,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('subformsContainer');
-            const addButton = document.getElementById('addSubform');
-            const template = document.getElementById('subformTemplate');
+            const container = document.getElementById('experienceSubformsContainer');
+            const addButton = document.getElementById('addExperienceSubform');
+            const template = document.getElementById('experienceTemplate');
             let subformCount = 0;
 
             // Add subform with animation
@@ -206,9 +213,9 @@
                 // Update the subform number
                 subform.querySelector('.subform-number').textContent = subformCount;
 
-                // Update input names with correct index
-                subform.querySelectorAll('input').forEach(input => {
-                    input.name = input.name.replace('INDEX', subformCount - 1);
+                // Update input names with correct index for all form elements
+                subform.querySelectorAll('input, textarea, select').forEach(element => {
+                    element.name = element.name.replace('INDEX', subformCount - 1);
                 });
 
                 // Add remove button functionality
@@ -238,9 +245,9 @@
                 document.querySelectorAll('.subform').forEach((subform, index) => {
                     subform.querySelector('.subform-number').textContent = index + 1;
 
-                    // Update input names
-                    subform.querySelectorAll('input').forEach(input => {
-                        input.name = input.name.replace(/subforms\[\d+\]/, `subforms[${index}]`);
+                    // Update input names for all form elements
+                    subform.querySelectorAll('input, textarea, select').forEach(element => {
+                        element.name = element.name.replace(/subforms\[\d+\]/, `subforms[${index}]`);
                     });
                 });
             }
