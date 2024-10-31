@@ -62,27 +62,57 @@
                             <option value="Elementary">Elementary</option>
                         </select>
                     </div>
-                    <div>
-                        <label for="languages" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Language</label>
-                        <select id="languages" name="languages"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option value="" disabled selected hidden>Select language and level</option>
-                            @foreach($languages as $code => $language)
-                            <option value="{{ $code }}"> {{ $language }}</option>
-                            @endforeach
-                        </select>
+
+                    <div class="flex gap-4">
+                        <button type="button" onclick="addLanguagePair()"
+                                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Add Language
+                        </button>
                     </div>
-                    <div>
-                        <label for="language_level" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Language level</label>
-                        <select id="language_level" name="language_level"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <option selected="">Select language and level</option>
-                            @foreach($languageLevels as $code => $level)
-                                <option value="{{ $code }}"> {{ $level }}</option>
-                            @endforeach
-                        </select>
+
+                    <div class="sm:col-span-2" id="languages-container">
+                        <template id="language-pair-template">
+                            <div class="language-pair mb-4 border p-4 rounded-lg">
+                                <div class="flex justify-between mb-2">
+                                    <h3 class="text-lg font-semibold">Language Details</h3>
+                                    <button type="button" onclick="removeLanguagePair(this)"
+                                            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Language</label>
+                                        <select name="languages[]"
+                                                onchange="handleLanguageChange(this)"
+                                                class="language-select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <option value="" disabled selected hidden>Select language</option>
+                                            @foreach($languages as $code => $language)
+                                                <option value="{{ $code }}">{{ $language }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Language level</label>
+                                        <select name="language_levels[]" disabled
+                                                class="level-select bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                            <option value="" disabled selected>Select level</option>
+                                            @foreach($languageLevels as $code => $level)
+                                                <option value="{{ $code }}">{{ $level }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
                     </div>
-                    {{--TODO: like both select together --}}
                     <div class="flex gap-4">
                         <button
                             type="button"
@@ -194,6 +224,47 @@
     </template>
 
     <script>
+        //language select
+        let pairCounter = 0;
+
+        function addLanguagePair() {
+            const container = document.getElementById('languages-container');
+            const template = document.getElementById('language-pair-template');
+            const clone = template.content.cloneNode(true);
+
+            // Update the clone's selects with unique identifiers
+            const languageSelect = clone.querySelector('.language-select');
+            const levelSelect = clone.querySelector('.level-select');
+
+            pairCounter++;
+            languageSelect.id = `language-${pairCounter}`;
+            levelSelect.id = `level-${pairCounter}`;
+
+            container.appendChild(clone);
+        }
+
+        function removeLanguagePair(button) {
+            button.closest('.language-pair').remove();
+        }
+
+        function handleLanguageChange(languageSelect) {
+            const parentDiv = languageSelect.closest('.language-pair');
+            const levelSelect = parentDiv.querySelector('.level-select');
+
+            if (languageSelect.value) {
+                levelSelect.disabled = false;
+                levelSelect.selectedIndex = 0;
+            } else {
+                levelSelect.disabled = true;
+                levelSelect.selectedIndex = 0;
+            }
+        }
+
+        // Add initial language pair on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            addLanguagePair();
+        });
+        // experience
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.getElementById('experienceSubformsContainer');
             const addButton = document.getElementById('addExperienceSubform');
