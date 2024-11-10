@@ -18,8 +18,6 @@ class CVController extends Controller
         }
         return view('cv.index', compact('cv'));
     }
-    //TODO: add cv.show blade view
-    //TODO: add cv.edit blade view
     public function show($id)
     {
 
@@ -34,7 +32,7 @@ class CVController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        dd($request);
         $validated = $request->validate([
             'firstName' => 'required|max:255',
             'surname' => 'required|max:255',
